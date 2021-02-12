@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.devsuperior2.dsdelivery.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_order")
@@ -30,6 +31,7 @@ public class Order implements Serializable {
 	private Instant moment;
 	private OrderStatus status;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "tb_order_product",
 	          joinColumns = @JoinColumn(name = "order_id"),
