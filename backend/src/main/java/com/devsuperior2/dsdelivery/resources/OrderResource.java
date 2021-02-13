@@ -1,18 +1,18 @@
 package com.devsuperior2.dsdelivery.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.devsuperior2.dsdelivery.entities.Order;
+import com.devsuperior2.dsdelivery.dto.OrderDTO;
 import com.devsuperior2.dsdelivery.services.OrderService;
 
 @RestController
@@ -23,21 +23,17 @@ public class OrderResource {
 	private OrderService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Order>> findAll(){
-		List<Order> list = service.findAll();
+	public ResponseEntity<List<OrderDTO>> findAll(){
+		List<OrderDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Order> insert(@RequestBody Order order ){
+	public ResponseEntity<OrderDTO> insert(@RequestBody OrderDTO order ){
 		order = service.insert(order);
-		return ResponseEntity.ok().body(order);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(order.getId()).toUri();
+		return ResponseEntity.created(uri).body(order);
 	}
 	
-	@PutMapping(value="/{id}")
-	public ResponseEntity<Order> update(@RequestBody Order order, @PathVariable Long id){
-		order = service.update(order, id);
-		return ResponseEntity.ok().body(order);
-	}
-
+	
 }
