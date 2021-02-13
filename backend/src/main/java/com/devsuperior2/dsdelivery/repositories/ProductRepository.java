@@ -7,5 +7,7 @@ import com.devsuperior2.dsdelivery.entities.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
+	
+
 
 }
